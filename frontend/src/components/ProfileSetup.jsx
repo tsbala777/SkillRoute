@@ -215,8 +215,10 @@ const ProfileSetup = () => {
         experience: formData.experience || ''
       };
       
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      
       await axios.post(
-        'http://localhost:8000/api/students/profile',
+        `${API_URL}/api/students/profile`,
         profileData,
         {
           headers: {
