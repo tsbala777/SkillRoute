@@ -204,28 +204,81 @@ const Profile = () => {
   };
 
   const handleSubmit = async () => {
+    // Validate required fields
+    if (!formData.name.trim()) {
+      alert('Please enter your name');
+      return;
+    }
+    if (!formData.education) {
+      alert('Please select your education level');
+      return;
+    }
+    if (formData.skills.length === 0) {
+      alert('Please select at least one skill');
+      return;
+    }
+    if (formData.interests.length === 0) {
+      alert('Please select at least one career interest');
+      return;
+    }
+    if (!formData.goals.trim()) {
+      alert('Please enter your career goals');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
+      // Check if user is authenticated
+      if (!auth.currentUser) {
+        alert('You must be logged in to save your profile');
+        navigate('/login');
+        return;
+      }
+
       const token = await auth.currentUser.getIdToken();
       
       // Convert arrays to comma-separated strings for backend
       const profileData = {
-        name: formData.name,
+        name: formData.name.trim(),
         education: formData.education,
         skills: formData.skills.join(', '),
         interests: formData.interests.join(', '),
-        goals: formData.goals,
-        experience: formData.experience || ''
+        goals: formData.goals.trim(),
+        experience: formData.experience ? formData.experience.trim() : ''
       };
       
-      await axios.post(`${API_URL}/api/students/profile`, profileData, {
-        headers: { Authorization: `Bearer ${token}` }
+      console.log('Saving profile:', profileData);
+      
+      const response = await axios.post(`${API_URL}/api/students/profile`, profileData, {
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
 
+      console.log('Profile saved successfully:', response.data);
+      alert('Profile saved successfully!');
       navigate('/dashboard');
     } catch (error) {
       console.error('Error saving profile:', error);
-      alert('Failed to save profile. Please try again.');
+      
+      let errorMessage = 'Failed to save profile. ';
+      
+      if (error.response) {
+        // Server responded with error
+        console.error('Error response:', error.response.data);
+        errorMessage += error.response.data.detail || error.response.data.message || 'Please try again.';
+      } else if (error.request) {
+        // Request made but no response
+        console.error('No response received:', error.request);
+        errorMessage += 'Unable to reach the server. Please check your connection.';
+      } else {
+        // Error setting up request
+        console.error('Error details:', error.message);
+        errorMessage += error.message || 'Please try again.';
+      }
+      
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

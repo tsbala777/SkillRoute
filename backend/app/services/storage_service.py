@@ -124,8 +124,16 @@ def get_student_profile(user_id: str):
 
 def save_student_profile(user_id: str, profile: dict):
     """Save or update student profile in Firestore"""
-    db.collection("users").document(user_id).set({
-        "profile": profile,
-        "updated_at": datetime.utcnow()
-    }, merge=True)
-    return True
+    try:
+        print(f"Saving to Firestore for user: {user_id}")
+        db.collection("users").document(user_id).set({
+            "profile": profile,
+            "updated_at": datetime.utcnow()
+        }, merge=True)
+        print(f"Successfully saved to Firestore for user: {user_id}")
+        return True
+    except Exception as e:
+        print(f"Firestore error for user {user_id}: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise Exception(f"Database error: {str(e)}")
