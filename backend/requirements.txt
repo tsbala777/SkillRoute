@@ -1,6 +1,8 @@
 fastapi
-uvicorn
+uvicorn[standard]
 python-dotenv
 pydantic
 openai
 firebase-admin
+httptools
+uvloop

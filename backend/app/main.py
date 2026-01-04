@@ -11,19 +11,21 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configure CORS
+# Configure CORS - Must be before including routers
+origins = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://skillroute.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://skillroute.vercel.app",  # Your production Vercel app
-    ],
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
     expose_headers=["*"],
-    allow_origin_regex=r"https://.*\.vercel\.app"  # Allow all Vercel preview deployments
+    max_age=3600,
 )
 
 app.include_router(career_router)
@@ -37,4 +39,8 @@ def root():
         "env": ENV,
         "status": "running"
     }
+
+@app.get("/health")
+def health():
+    return {"status": "healthy"}
 
