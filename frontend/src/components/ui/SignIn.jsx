@@ -181,19 +181,29 @@ export const SignIn = () => {
       {/* Developed By Section */}
       <div className="mt-8 text-center animate-fade-in max-w-2xl mx-auto">
         <p className="text-gray-400 dark:text-gray-500 text-[10px] sm:text-xs font-bold mb-4 uppercase tracking-wider">Developed by</p>
-        <div className="grid grid-cols-2 gap-3">
-          {/* Balasuriya M */}
-          <a href="https://www.linkedin.com/in/balasuriya-m-453663257/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-4 bg-white dark:bg-zinc-900 rounded-full border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
-            <div className="w-8 h-8 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs border border-gray-200 dark:border-zinc-700">BM</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {/* Haridharshini J */}
+          <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-4 bg-white dark:bg-zinc-900 rounded-full border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
+            <div className="w-8 h-8 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs border border-gray-200 dark:border-zinc-700">HJ</div>
             <div className="text-left flex-1">
-              <p className="text-xs font-bold text-gray-900 dark:text-white">Balasuriya M</p>
+              <p className="text-xs font-bold text-gray-900 dark:text-white">Haridharshini J</p>
               <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Full Stack Developer</p>
             </div>
             <Linkedin className="w-4 h-4 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
           </a>
           
+          {/* Dheebash Sai R */}
+          <a href="https://www.linkedin.com/in/dheebash-sai-ramesh-563b96320/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-4 bg-white dark:bg-zinc-900 rounded-full border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
+            <div className="w-8 h-8 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs border border-gray-200 dark:border-zinc-700">DS</div>
+            <div className="text-left flex-1">
+              <p className="text-xs font-bold text-gray-900 dark:text-white">Dheebash Sai R</p>
+              <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Full Stack Developer</p>
+            </div>
+            <Linkedin className="w-4 h-4 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+          </a>
+
           {/* Bala Saravanan K */}
-          <a href="https://www.linkedin.com/in/bala-saravanan-k-353673257/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-4 bg-white dark:bg-zinc-900 rounded-full border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
+          <a href="https://www.linkedin.com/in/bala-saravanan-k/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-4 bg-white dark:bg-zinc-900 rounded-full border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
             <div className="w-8 h-8 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs border border-gray-200 dark:border-zinc-700">BS</div>
             <div className="text-left flex-1">
               <p className="text-xs font-bold text-gray-900 dark:text-white">Bala Saravanan K</p>
@@ -202,22 +212,12 @@ export const SignIn = () => {
             <Linkedin className="w-4 h-4 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
           </a>
 
-          {/* Developer 3 */}
+          {/* Thanushree Vijayakanth */}
           <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-4 bg-white dark:bg-zinc-900 rounded-full border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
-            <div className="w-8 h-8 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs border border-gray-200 dark:border-zinc-700">JD</div>
+            <div className="w-8 h-8 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs border border-gray-200 dark:border-zinc-700">TV</div>
             <div className="text-left flex-1">
-              <p className="text-xs font-bold text-gray-900 dark:text-white">John Doe</p>
+              <p className="text-xs font-bold text-gray-900 dark:text-white">Thanushree Vijayakanth</p>
               <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Backend Developer</p>
-            </div>
-            <Linkedin className="w-4 h-4 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
-          </a>
-
-          {/* Developer 4 */}
-          <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-4 bg-white dark:bg-zinc-900 rounded-full border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
-            <div className="w-8 h-8 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs border border-gray-200 dark:border-zinc-700">SA</div>
-            <div className="text-left flex-1">
-              <p className="text-xs font-bold text-gray-900 dark:text-white">Sarah Anderson</p>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">UI/UX Designer</p>
             </div>
             <Linkedin className="w-4 h-4 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
           </a>
