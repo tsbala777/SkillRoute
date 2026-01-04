@@ -8,11 +8,9 @@ const AdaptiveRecommendations = ({ progress, roadmap }) => {
     const { completed_phases = 0, total_phases = 0, streak_days = 0 } = progress;
     const completionRate = total_phases > 0 ? (completed_phases / total_phases) * 100 : 0;
 
-    // Generate recommendations based on progress
     const generateRecommendations = () => {
         const recommendations = [];
 
-        // Pace recommendations
         if (completionRate < 20 && streak_days < 3) {
             recommendations.push({
                 type: 'pace',
@@ -39,7 +37,6 @@ const AdaptiveRecommendations = ({ progress, roadmap }) => {
             });
         }
 
-        // Resource recommendations
         if (roadmap?.roadmap && roadmap.roadmap.length > 0) {
             const currentPhase = roadmap.roadmap[completed_phases];
             if (currentPhase) {
@@ -53,7 +50,6 @@ const AdaptiveRecommendations = ({ progress, roadmap }) => {
             }
         }
 
-        // Motivation
         if (completionRate > 75) {
             recommendations.push({
                 type: 'motivation',

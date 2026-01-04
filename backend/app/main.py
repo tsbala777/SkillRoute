@@ -11,7 +11,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configure CORS - Must be before including routers
 origins = [
     "http://localhost:3000",
     "http://localhost:5173",

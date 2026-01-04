@@ -18,7 +18,6 @@ const CareerMatchCard = ({ careerDecision, onViewInsights }) => {
         industry_demand = 'stable',
     } = careerDecision;
 
-    // Demand badge styling
     const getDemandBadge = (demand) => {
         switch (demand) {
             case 'trending':
@@ -42,10 +41,8 @@ const CareerMatchCard = ({ careerDecision, onViewInsights }) => {
             >
                 <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-800 overflow-hidden">
 
-                    {/* Header Section */}
                     <div className="p-6 pb-5">
                         <div className="flex items-start justify-between gap-4">
-                            {/* Left: Title & Badge */}
                             <div className="flex-1 min-w-0">
                                 <motion.span
                                     initial={{ opacity: 0, scale: 0.9 }}
@@ -72,7 +69,6 @@ const CareerMatchCard = ({ careerDecision, onViewInsights }) => {
                                 </p>
                             </div>
 
-                            {/* Right: CTA Button */}
                             <motion.button
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
@@ -90,10 +86,8 @@ const CareerMatchCard = ({ careerDecision, onViewInsights }) => {
                         </div>
                     </div>
 
-                    {/* Metrics Section */}
                     <div className="px-6 pb-6">
                         <div className="grid grid-cols-3 gap-4">
-                            {/* AI Confidence */}
                             <motion.div
                                 initial={{ opacity: 0, y: 12 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -127,7 +121,6 @@ const CareerMatchCard = ({ careerDecision, onViewInsights }) => {
                                 </div>
                             </motion.div>
 
-                            {/* Skill Match */}
                             <motion.div
                                 initial={{ opacity: 0, y: 12 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -161,7 +154,6 @@ const CareerMatchCard = ({ careerDecision, onViewInsights }) => {
                                 </div>
                             </motion.div>
 
-                            {/* Job Ready */}
                             <motion.div
                                 initial={{ opacity: 0, y: 12 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -199,7 +191,6 @@ const CareerMatchCard = ({ careerDecision, onViewInsights }) => {
                 </div>
             </motion.div>
 
-            {/* Modal */}
             <DecisionInsightsModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}

@@ -32,7 +32,6 @@
     @apply w-4 h-4 rounded border-2 border-gray-300 checked:bg-black checked:border-black cursor-pointer;
   }
 
-  /* Glassmorphism Cards - Monochrome */
   .glass-card {
     @apply backdrop-blur-xl bg-white/90 dark:bg-zinc-900/90 border border-gray-200 dark:border-zinc-800 shadow-xl dark:shadow-2xl;
   }
@@ -41,7 +40,6 @@
     @apply backdrop-blur-lg bg-white/70 dark:bg-zinc-900/70 border border-gray-200 dark:border-zinc-800;
   }
 
-  /* Accent Color - Single Blue for highlights */
   .accent-primary {
     @apply bg-blue-600 dark:bg-blue-500;
   }
@@ -54,7 +52,6 @@
     @apply border-blue-600 dark:border-blue-500;
   }
 
-  /* Monochrome Backgrounds */
   .bg-monochrome-light {
     @apply bg-gray-50 dark:bg-zinc-950;
   }
@@ -67,7 +64,6 @@
     @apply bg-gray-100 dark:bg-zinc-800;
   }
 
-  /* Premium Card Styles - Clean */
   .premium-card {
     @apply relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl;
   }
@@ -77,7 +73,6 @@
     @apply absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none;
   }
 
-  /* Smooth Hover Effects */
   .hover-lift {
     @apply transition-transform duration-300 hover:-translate-y-1;
   }
@@ -86,7 +81,6 @@
     @apply transition-shadow duration-300 hover:shadow-lg hover:shadow-blue-500/20;
   }
 
-  /* Responsive Text Utilities */
   .text-responsive-sm {
     @apply text-xs sm:text-sm;
   }
@@ -103,7 +97,6 @@
     @apply text-lg sm:text-xl md:text-2xl;
   }
 
-  /* Mobile-Optimized Spacing */
   .mobile-padding {
     @apply p-4 sm:p-6 md:p-8;
   }
@@ -116,7 +109,6 @@
     @apply space-y-4 sm:space-y-6 md:space-y-8;
   }
 
-  /* Touch-Friendly Buttons */
   .btn-touch {
     @apply min-h-[48px] px-6 py-3 rounded-xl font-semibold transition-all duration-200;
   }
@@ -133,7 +125,6 @@
     @apply btn-touch bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 text-gray-900 dark:text-white;
   }
 
-  /* Mobile-Optimized Cards */
   .mobile-card {
     @apply rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-zinc-800 shadow-lg;
   }
@@ -144,7 +135,6 @@
     text-wrap: balance;
   }
 
-  /* Shimmer Loading Effect */
   .shimmer {
     background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
     background-size: 200% 100%;
@@ -162,7 +152,6 @@
     }
   }
 
-  /* Shimmer Animation for Progress Bars */
   @keyframes shimmer-slide {
     0% {
       transform: translateX(-100%);
@@ -177,7 +166,6 @@
     animation: shimmer-slide 2s infinite;
   }
 
-  /* Pulse Glow Animation */
   @keyframes pulse-glow {
 
     0%,
@@ -195,7 +183,6 @@
   }
 }
 
-/* Animations for Sign In Component */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
@@ -238,7 +225,6 @@
   }
 }
 
-/* Confetti Animation */
 @keyframes confetti-fall {
   0% {
     transform: translateY(-100vh) rotate(0deg);
@@ -260,7 +246,6 @@
   z-index: 9999;
 }
 
-/* Scale In Animation */
 @keyframes scaleIn {
   from {
     opacity: 0;

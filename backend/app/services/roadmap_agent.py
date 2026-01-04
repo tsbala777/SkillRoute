@@ -1,8 +1,8 @@
 import os
 import json
-from openai import OpenAI
+from openai import AsyncOpenAI
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 SYSTEM_PROMPT = """
 You are an AI Learning Roadmap Planner.
@@ -62,9 +62,8 @@ Return ONLY valid JSON in this exact format:
 }
 """
 
-def generate_roadmap(profile: dict) -> dict:
-    """Generate both career decision and learning roadmap"""
-    response = client.chat.completions.create(
+async def generate_roadmap(profile: dict) -> dict:
+    response = await client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
@@ -110,16 +109,14 @@ Return ONLY valid JSON for the new "learning_roadmap" part:
 }
 """
 
-def adapt_roadmap(current_data: dict) -> dict:
-    """Adapt the roadmap based on progress"""
+async def adapt_roadmap(current_data: dict) -> dict:
     
-    # Prepare input for AI
     input_data = {
         "current_roadmap": current_data.get("learning_roadmap"),
         "progress": current_data.get("progress")
     }
     
-    response = client.chat.completions.create(
+    response = await client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": ADAPT_SYSTEM_PROMPT},
@@ -133,5 +130,4 @@ def adapt_roadmap(current_data: dict) -> dict:
     try:
         return json.loads(content)
     except json.JSONDecodeError:
-        # Fallback: return original if AI fails
         return current_data.get("learning_roadmap")

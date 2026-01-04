@@ -11,7 +11,6 @@ const ProgressTracker = ({ progress, phases }) => {
   const { completed_phases, total_phases, streak_days, last_activity_date } = progress;
   const percentage = total_phases > 0 ? Math.round((completed_phases / total_phases) * 100) : 0;
 
-  // Calculate learning pace
   const getLearningPace = () => {
     if (!last_activity_date) return { label: 'Just Started', color: 'blue', icon: Zap };
 
@@ -26,14 +25,12 @@ const ProgressTracker = ({ progress, phases }) => {
   const pace = getLearningPace();
   const PaceIcon = pace.icon;
 
-  // Find the first non-completed phase
   const currentPhase = phases?.find(phase => phase.status !== 'completed');
   const nextPhase = phases?.find((phase, index) => {
     const phaseIndex = phases.indexOf(currentPhase);
     return index === phaseIndex + 1;
   });
 
-  // Trigger confetti on 100% completion
   useEffect(() => {
     if (percentage === 100) {
       setShowConfetti(true);
@@ -53,7 +50,6 @@ const ProgressTracker = ({ progress, phases }) => {
   return (
     <div className="mobile-spacing">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {/* Streak Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -80,7 +76,6 @@ const ProgressTracker = ({ progress, phases }) => {
           </Card>
         </motion.div>
 
-        {/* Progress Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -114,7 +109,6 @@ const ProgressTracker = ({ progress, phases }) => {
           </Card>
         </motion.div>
 
-        {/* Learning Pace Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -140,7 +134,6 @@ const ProgressTracker = ({ progress, phases }) => {
           </Card>
         </motion.div>
 
-        {/* Last Active Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -167,7 +160,6 @@ const ProgressTracker = ({ progress, phases }) => {
         </motion.div>
       </div>
 
-      {/* Confetti Effect on Completion */}
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-50">
           {[...Array(50)].map((_, i) => (

@@ -15,22 +15,22 @@ import {
   SelectValue,
 } from './ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  CheckCircle2, 
-  Sparkles, 
-  Globe, 
-  Smartphone, 
-  Brain, 
-  BarChart3, 
-  Cloud, 
-  Shield, 
-  Settings, 
-  Gamepad2, 
-  Link2, 
-  Radio, 
-  Palette, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle2,
+  Sparkles,
+  Globe,
+  Smartphone,
+  Brain,
+  BarChart3,
+  Cloud,
+  Shield,
+  Settings,
+  Gamepad2,
+  Link2,
+  Radio,
+  Palette,
   Code2,
   Compass
 } from 'lucide-react';
@@ -61,7 +61,7 @@ const SKILL_OPTIONS = [
   { name: 'Ruby', category: 'Languages' },
   { name: 'Swift', category: 'Languages' },
   { name: 'Kotlin', category: 'Languages' },
-  
+
   // Frontend
   { name: 'React', category: 'Frontend' },
   { name: 'Vue.js', category: 'Frontend' },
@@ -70,7 +70,7 @@ const SKILL_OPTIONS = [
   { name: 'Next.js', category: 'Frontend' },
   { name: 'HTML/CSS', category: 'Frontend' },
   { name: 'Tailwind CSS', category: 'Frontend' },
-  
+
   // Backend
   { name: 'Node.js', category: 'Backend' },
   { name: 'Django', category: 'Backend' },
@@ -79,7 +79,7 @@ const SKILL_OPTIONS = [
   { name: 'Express.js', category: 'Backend' },
   { name: 'FastAPI', category: 'Backend' },
   { name: '.NET', category: 'Backend' },
-  
+
   // Database
   { name: 'SQL', category: 'Database' },
   { name: 'PostgreSQL', category: 'Database' },
@@ -87,7 +87,7 @@ const SKILL_OPTIONS = [
   { name: 'MySQL', category: 'Database' },
   { name: 'Redis', category: 'Database' },
   { name: 'Firebase', category: 'Database' },
-  
+
   // Cloud & DevOps
   { name: 'AWS', category: 'Cloud/DevOps' },
   { name: 'Azure', category: 'Cloud/DevOps' },
@@ -96,7 +96,7 @@ const SKILL_OPTIONS = [
   { name: 'Kubernetes', category: 'Cloud/DevOps' },
   { name: 'CI/CD', category: 'Cloud/DevOps' },
   { name: 'Git', category: 'Cloud/DevOps' },
-  
+
   // Data & AI
   { name: 'Machine Learning', category: 'Data/AI' },
   { name: 'TensorFlow', category: 'Data/AI' },
@@ -204,8 +204,7 @@ const ProfileSetup = () => {
       }
 
       const idToken = await user.getIdToken();
-      
-      // Convert arrays to comma-separated strings for backend
+
       const profileData = {
         name: formData.name,
         education: formData.education,
@@ -214,9 +213,9 @@ const ProfileSetup = () => {
         goals: formData.goals,
         experience: formData.experience || ''
       };
-      
+
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-      
+
       await axios.post(
         `${API_URL}/api/students/profile`,
         profileData,
@@ -230,7 +229,6 @@ const ProfileSetup = () => {
 
       navigate('/dashboard');
     } catch (error) {
-      console.error('Error saving profile:', error);
       alert('Failed to save profile. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -252,7 +250,6 @@ const ProfileSetup = () => {
     }
   };
 
-  // Group skills by category
   const skillsByCategory = SKILL_OPTIONS.reduce((acc, skill) => {
     if (!acc[skill.category]) {
       acc[skill.category] = [];
@@ -263,7 +260,6 @@ const ProfileSetup = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-3 sm:p-4 md:p-6">
-      {/* App Header */}
       <div className="mb-6 sm:mb-8 text-center animate-fade-in">
         <div className="flex items-center justify-center gap-3 mb-2">
           <div className="p-2.5 bg-white rounded-xl shadow-sm border border-gray-200">
@@ -275,20 +271,18 @@ const ProfileSetup = () => {
       </div>
 
       <div className="w-full max-w-4xl">
-        {/* Progress indicator */}
         <div className="mb-3 sm:mb-4 md:mb-6">
           <div className="flex items-center w-full">
             {steps.map((step, index) => (
               <React.Fragment key={index}>
                 <div className="flex flex-col items-center">
                   <div
-                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold transition-all duration-300 text-sm sm:text-base ${
-                      index === currentStep
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold transition-all duration-300 text-sm sm:text-base ${index === currentStep
                         ? 'bg-black text-white shadow-lg'
                         : index < currentStep
-                        ? 'bg-black text-white'
-                        : 'bg-white text-gray-400 border-2 border-gray-200'
-                    }`}
+                          ? 'bg-black text-white'
+                          : 'bg-white text-gray-400 border-2 border-gray-200'
+                      }`}
                   >
                     {index < currentStep ? (
                       <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -296,13 +290,12 @@ const ProfileSetup = () => {
                       index + 1
                     )}
                   </div>
-                  <span className={`text-xs sm:text-sm font-bold mt-2 whitespace-nowrap transition-colors ${
-                    index === currentStep 
-                      ? 'text-black' 
+                  <span className={`text-xs sm:text-sm font-bold mt-2 whitespace-nowrap transition-colors ${index === currentStep
+                      ? 'text-black'
                       : index < currentStep
-                      ? 'text-gray-900'
-                      : 'text-gray-400'
-                  }`}>{step.title}</span>
+                        ? 'text-gray-900'
+                        : 'text-gray-400'
+                    }`}>{step.title}</span>
                 </div>
                 {index < steps.length - 1 && (
                   <div className="h-0.5 flex-1 mx-2 sm:mx-3 bg-gray-200 rounded" />
@@ -332,7 +325,6 @@ const ProfileSetup = () => {
                 transition={{ duration: 0.3 }}
                 className="space-y-3 sm:space-y-4"
               >
-                {/* Step 0: Basic Info */}
                 {currentStep === 0 && (
                   <div className="space-y-3 sm:space-y-4">
                     <div>
@@ -364,7 +356,6 @@ const ProfileSetup = () => {
                   </div>
                 )}
 
-                {/* Step 1: Skills */}
                 {currentStep === 1 && (
                   <div className="space-y-4 sm:space-y-5">
                     {Object.entries(skillsByCategory).map(([category, skills]) => (
@@ -376,11 +367,10 @@ const ProfileSetup = () => {
                               key={skill}
                               type="button"
                               onClick={() => toggleSkill(skill)}
-                              className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
-                                formData.skills.includes(skill)
+                              className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${formData.skills.includes(skill)
                                   ? 'bg-black text-white shadow-md'
                                   : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-black border border-gray-200'
-                              }`}
+                                }`}
                             >
                               {skill}
                             </button>
@@ -421,7 +411,6 @@ const ProfileSetup = () => {
                   </div>
                 )}
 
-                {/* Step 2: Interests */}
                 {currentStep === 2 && (
                   <div className="space-y-4 sm:space-y-5">
                     <div>
@@ -437,11 +426,10 @@ const ProfileSetup = () => {
                               key={domain.name}
                               type="button"
                               onClick={() => toggleInterest(domain.name)}
-                              className={`p-2.5 sm:p-3.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 border-2 ${
-                                formData.interests.includes(domain.name)
+                              className={`p-2.5 sm:p-3.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 border-2 ${formData.interests.includes(domain.name)
                                   ? 'border-black bg-gray-50 shadow-md'
                                   : 'border-gray-200 hover:border-gray-400 bg-white hover:shadow-sm'
-                              }`}
+                                }`}
                             >
                               <IconComponent className={`w-6 h-6 sm:w-7 sm:h-7 mb-1 mx-auto ${formData.interests.includes(domain.name) ? 'text-black' : 'text-gray-600'}`} />
                               <div className="text-center leading-tight">{domain.name}</div>
@@ -461,11 +449,10 @@ const ProfileSetup = () => {
                               key={domain.name}
                               type="button"
                               onClick={() => toggleInterest(domain.name)}
-                              className={`p-2.5 sm:p-3.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 border-2 ${
-                                formData.interests.includes(domain.name)
+                              className={`p-2.5 sm:p-3.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 border-2 ${formData.interests.includes(domain.name)
                                   ? 'border-black bg-gray-50 shadow-md'
                                   : 'border-gray-200 hover:border-gray-400 bg-white hover:shadow-sm'
-                              }`}
+                                }`}
                             >
                               <IconComponent className={`w-6 h-6 sm:w-7 sm:h-7 mb-1 mx-auto ${formData.interests.includes(domain.name) ? 'text-black' : 'text-gray-600'}`} />
                               <div className="text-center leading-tight">{domain.name}</div>

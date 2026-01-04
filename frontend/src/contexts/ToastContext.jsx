@@ -10,7 +10,6 @@ export const ToastProvider = ({ children }) => {
         const id = Date.now().toString();
         setToasts((prev) => [...prev, { id, message, type }]);
 
-        // Auto remove after duration
         setTimeout(() => {
             setToasts((prev) => prev.filter((t) => t.id !== id));
         }, 3000);
@@ -20,7 +19,6 @@ export const ToastProvider = ({ children }) => {
         setToasts((prev) => prev.filter((t) => t.id !== id));
     }, []);
 
-    // Helper functions for easier usage
     const toast = {
         success: (message) => addToast(message, 'success'),
         error: (message) => addToast(message, 'error'),

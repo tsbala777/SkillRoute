@@ -26,14 +26,12 @@ const RoadmapView = ({ roadmap, onGenerate, onRefresh, loading }) => {
 
       onRefresh()
     } catch (error) {
-      console.error('Error updating progress:', error)
       toast.error('Failed to update progress')
     } finally {
       setUpdating(false)
     }
   }
 
-  // Empty State
   if (!roadmap) {
     return (
       <div className="flex items-center justify-center min-h-[50vh] p-4">
@@ -75,7 +73,6 @@ const RoadmapView = ({ roadmap, onGenerate, onRefresh, loading }) => {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Learning Path Card */}
       {roadmap.learning_roadmap && roadmap.learning_roadmap.roadmap && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -83,7 +80,6 @@ const RoadmapView = ({ roadmap, onGenerate, onRefresh, loading }) => {
           transition={{ delay: 0.1 }}
           className="bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-800 overflow-hidden"
         >
-          {/* Header */}
           <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-zinc-800">
             <div className="flex items-center justify-between">
               <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
@@ -96,7 +92,6 @@ const RoadmapView = ({ roadmap, onGenerate, onRefresh, loading }) => {
             </div>
           </div>
 
-          {/* Timeline */}
           <div className="p-4 sm:p-6">
             <div className="space-y-3 sm:space-y-4">
               {roadmap.learning_roadmap.roadmap.map((phase, index) => {
@@ -111,12 +106,10 @@ const RoadmapView = ({ roadmap, onGenerate, onRefresh, loading }) => {
                     transition={{ delay: 0.15 + index * 0.05 }}
                     className="relative flex gap-3 sm:gap-4 pl-8 sm:pl-10"
                   >
-                    {/* Vertical Line Segment */}
                     {!isLast && (
                       <div className="absolute w-px bg-gray-200 dark:bg-zinc-700 left-3 top-3 -bottom-6 sm:left-4 sm:top-4 sm:-bottom-8" />
                     )}
 
-                    {/* Node */}
                     <button
                       onClick={() => handlePhaseToggle(index, phase.status)}
                       disabled={updating}
@@ -128,12 +121,10 @@ const RoadmapView = ({ roadmap, onGenerate, onRefresh, loading }) => {
                       {isCompleted ? <CheckCircle2 className="w-3 h-3 sm:w-4 sm:h-4" /> : index + 1}
                     </button>
 
-                    {/* Content */}
                     <div className={`flex-1 p-3 sm:p-4 rounded-xl border ${isCompleted
                       ? 'bg-emerald-50/50 dark:bg-emerald-500/5 border-emerald-200 dark:border-emerald-900/30'
                       : 'bg-gray-50 dark:bg-zinc-800/50 border-gray-200 dark:border-zinc-700'
                       }`}>
-                      {/* Header */}
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <div className="flex items-center gap-2 flex-wrap">
                           <h4 className={`text-sm sm:text-base font-semibold ${isCompleted ? 'text-emerald-800 dark:text-emerald-400' : 'text-gray-900 dark:text-white'}`}>
@@ -146,7 +137,6 @@ const RoadmapView = ({ roadmap, onGenerate, onRefresh, loading }) => {
                           )}
                         </div>
 
-                        {/* Right Side: Checkbox & Duration */}
                         <div className="flex flex-col items-end gap-1">
                           <button
                             onClick={() => handlePhaseToggle(index, phase.status)}
@@ -170,7 +160,6 @@ const RoadmapView = ({ roadmap, onGenerate, onRefresh, loading }) => {
                         </div>
                       </div>
 
-                      {/* Skills */}
                       {phase.focus_skills && phase.focus_skills.length > 0 && (
                         <div className="flex flex-wrap gap-1.5 mb-3">
                           {phase.focus_skills.slice(0, 6).map((skill, idx) => (
@@ -189,7 +178,6 @@ const RoadmapView = ({ roadmap, onGenerate, onRefresh, loading }) => {
                         </div>
                       )}
 
-                      {/* Outcomes */}
                       {phase.outcomes && phase.outcomes.length > 0 && (
                         <ul className="space-y-1.5">
                           {phase.outcomes.slice(0, 4).map((outcome, idx) => (

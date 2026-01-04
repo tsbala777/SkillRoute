@@ -1,18 +1,4 @@
-"""
-Skill matching and career analysis service
-"""
-
 def calculate_skill_match(profile_skills: list, required_skills: list) -> dict:
-    """
-    Calculate skill match score between profile and career requirements
-    
-    Args:
-        profile_skills: List of skills from student profile
-        required_skills: List of required skills for career
-        
-    Returns:
-        Dictionary with match analysis
-    """
     if not required_skills:
         return {
             "match_percentage": 0,
@@ -27,29 +13,17 @@ def calculate_skill_match(profile_skills: list, required_skills: list) -> dict:
     matched = profile_set.intersection(required_set)
     missing = required_set.difference(profile_set)
     
-    # Simple match percentage
     match_percentage = int((len(matched) / len(required_set)) * 100) if required_set else 0
     
     return {
         "match_percentage": match_percentage,
         "matched_skills": list(matched),
         "missing_skills": list(missing),
-        "transferable_skills": []  # Could be enhanced with AI analysis
+        "transferable_skills": []
     }
 
 
 def analyze_industry_demand(career: str) -> dict:
-    """
-    Analyze industry demand for a career (simplified version)
-    In production, this would connect to job market APIs
-    
-    Args:
-        career: Career title
-        
-    Returns:
-        Dictionary with demand analysis
-    """
-    # Simplified demand mapping - in production, use real data
     trending_careers = [
         "ai engineer", "machine learning engineer", "data scientist",
         "full stack developer", "cloud architect", "devops engineer",
@@ -76,28 +50,16 @@ def analyze_industry_demand(career: str) -> dict:
     return {
         "demand_level": demand,
         "growth_projection": growth,
-        "job_openings_estimate": "moderate to high",  # Placeholder
-        "avg_salary_range": "$60k - $120k"  # Placeholder
+        "job_openings_estimate": "moderate to high",
+        "avg_salary_range": "$60k - $120k"
     }
 
 
 def generate_career_insights(profile: dict, career_decision: dict) -> dict:
-    """
-    Generate comprehensive career insights
-    
-    Args:
-        profile: Student profile data
-        career_decision: Career decision from AI
-        
-    Returns:
-        Dictionary with detailed insights
-    """
     career = career_decision.get("career", "")
     
-    # Analyze demand
     demand_info = analyze_industry_demand(career)
     
-    # Get skill information from career decision
     key_strengths = career_decision.get("key_strengths", [])
     skill_gaps = career_decision.get("skill_gaps", [])
     

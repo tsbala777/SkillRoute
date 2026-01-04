@@ -10,8 +10,6 @@ import { Label } from './label';
 import { useTheme } from '../../contexts/ThemeContext';
 import axios from 'axios';
 
-// --- HELPER COMPONENTS (ICONS) ---
-
 const GoogleIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 48 48">
     <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" />
@@ -20,8 +18,6 @@ const GoogleIcon = () => (
     <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C37.205 35.092 44 29.894 44 24c0-1.341-.138-2.65-.389-3.917z" />
   </svg>
 );
-
-// --- MAIN COMPONENT ---
 
 export const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +30,6 @@ export const SignUp = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
-  // Helper function to check if user has completed profile setup
   const checkProfileCompletion = async (user) => {
     try {
       const idToken = await user.getIdToken();
@@ -50,14 +45,12 @@ export const SignUp = () => {
         }
       );
 
-      // If profile exists and has required fields, user has completed setup
       if (response.data && response.data.name && response.data.education) {
         return true;
       }
       return false;
     } catch (error) {
       console.error('Error checking profile:', error);
-      // If there's an error (like 404 or no profile), assume profile not completed
       return false;
     }
   };
@@ -80,7 +73,6 @@ export const SignUp = () => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      // New accounts always need profile setup
       navigate('/profile-setup');
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
@@ -104,7 +96,6 @@ export const SignUp = () => {
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
 
-      // Check if user has completed profile setup (in case of returning Google user)
       const hasProfile = await checkProfileCompletion(user);
 
       if (hasProfile) {
@@ -125,7 +116,6 @@ export const SignUp = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center font-sans w-full bg-gray-50 dark:bg-black p-4 sm:p-6 lg:p-8 relative">
-      {/* Dark Mode Toggle Button */}
       <button
         onClick={toggleTheme}
         className="fixed top-6 right-6 z-[9999] p-3 rounded-full bg-white dark:bg-zinc-800 text-gray-900 dark:text-white border-2 border-gray-300 dark:border-zinc-600 shadow-2xl hover:scale-110 transition-all duration-200"
@@ -139,7 +129,6 @@ export const SignUp = () => {
         )}
       </button>
 
-      {/* App Header */}
       <div className="mb-6 sm:mb-8 text-center animate-fade-in">
         <div className="flex items-center justify-center gap-3 mb-2">
           <div className="p-2.5 bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-800">
@@ -258,49 +247,46 @@ export const SignUp = () => {
         </CardContent>
       </Card>
 
-      {/* Developed By Section */}
-      <div className="mt-8 text-center animate-fade-in w-full -mx-4 px-4 md:mx-auto md:max-w-md lg:max-w-[34rem]">
-        <p className="text-gray-400 dark:text-gray-500 text-[10px] sm:text-xs lg:text-sm font-bold mb-4 lg:mb-6 uppercase tracking-wider">Developed by</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
-          {/* Haridharshini J */}
-          <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 lg:gap-4 p-2 lg:p-3 pr-4 lg:pr-5 bg-white dark:bg-zinc-900 rounded-full border-2 border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
-            <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs lg:text-sm">HJ</div>
-            <div className="text-left flex-1">
-              <p className="text-xs lg:text-sm font-bold text-gray-900 dark:text-white">Haridharshini J</p>
-              <p className="text-[10px] lg:text-xs text-gray-500 dark:text-gray-400 font-medium">Full Stack Developer</p>
-            </div>
-            <Linkedin className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
-          </a>
+      <div className="mt-8 text-center animate-fade-in w-full md:max-w-md">
+        <div className="border-2 border-gray-200 dark:border-zinc-700 rounded-2xl p-6 bg-white dark:bg-zinc-900 shadow-xl">
+          <p className="text-gray-400 dark:text-gray-500 text-[10px] sm:text-xs font-bold mb-4 uppercase tracking-wider">Developed by</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-3 bg-gray-50 dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-zinc-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">HJ</div>
+              <div className="text-left flex-1 min-w-0">
+                <p className="text-xs font-bold text-gray-900 dark:text-gray-200 truncate">Haridharshini J</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium truncate">Full Stack Dev</p>
+              </div>
+              <Linkedin className="w-4 h-4 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+            </a>
 
-          {/* Dheebash Sai R */}
-          <a href="https://www.linkedin.com/in/dheebash-sai-ramesh-563b96320/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 lg:gap-4 p-2 lg:p-3 pr-4 lg:pr-5 bg-white dark:bg-zinc-900 rounded-full border-2 border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
-            <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs lg:text-sm">DS</div>
-            <div className="text-left flex-1">
-              <p className="text-xs lg:text-sm font-bold text-gray-900 dark:text-white">Dheebash Sai R</p>
-              <p className="text-[10px] lg:text-xs text-gray-500 dark:text-gray-400 font-medium">Full Stack Developer</p>
-            </div>
-            <Linkedin className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
-          </a>
+            <a href="https://www.linkedin.com/in/dheebash-sai-ramesh-563b96320/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-3 bg-gray-50 dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-zinc-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">DS</div>
+              <div className="text-left flex-1 min-w-0">
+                <p className="text-xs font-bold text-gray-900 dark:text-gray-200 truncate">Dheebash Sai</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium truncate">Full Stack Dev</p>
+              </div>
+              <Linkedin className="w-4 h-4 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+            </a>
 
-          {/* Bala Saravanan K */}
-          <a href="https://www.linkedin.com/in/bala-saravanan-k/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 lg:gap-4 p-2 lg:p-3 pr-4 lg:pr-5 bg-white dark:bg-zinc-900 rounded-full border-2 border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
-            <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs lg:text-sm">BS</div>
-            <div className="text-left flex-1">
-              <p className="text-xs lg:text-sm font-bold text-gray-900 dark:text-white">Bala Saravanan K</p>
-              <p className="text-[10px] lg:text-xs text-gray-500 dark:text-gray-400 font-medium">Web Designer</p>
-            </div>
-            <Linkedin className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
-          </a>
+            <a href="https://www.linkedin.com/in/bala-saravanan-k/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-3 bg-gray-50 dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-zinc-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">BS</div>
+              <div className="text-left flex-1 min-w-0">
+                <p className="text-xs font-bold text-gray-900 dark:text-gray-200 truncate">Bala Saravanan K</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium truncate">Web Designer</p>
+              </div>
+              <Linkedin className="w-4 h-4 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+            </a>
 
-          {/* Thanushree Vijayakanth */}
-          <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 lg:gap-4 p-2 lg:p-3 pr-4 lg:pr-5 bg-white dark:bg-zinc-900 rounded-full border-2 border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-all group hover:scale-105">
-            <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-black dark:bg-indigo-600 flex items-center justify-center text-white font-bold text-xs lg:text-sm">TV</div>
-            <div className="text-left flex-1">
-              <p className="text-xs lg:text-sm font-bold text-gray-900 dark:text-white">Thanushree V</p>
-              <p className="text-[10px] lg:text-xs text-gray-500 dark:text-gray-400 font-medium">Backend Developer</p>
-            </div>
-            <Linkedin className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
-          </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 pr-3 bg-gray-50 dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-zinc-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">TV</div>
+              <div className="text-left flex-1 min-w-0">
+                <p className="text-xs font-bold text-gray-900 dark:text-gray-200 truncate">Thanushree V</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium truncate">Backend Dev</p>
+              </div>
+              <Linkedin className="w-4 h-4 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

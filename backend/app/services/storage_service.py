@@ -20,55 +20,36 @@ def save_career_analysis(
       .collection("analyses") \
       .add(data)
 
-    # Also save as active roadmap
     save_active_roadmap(user_id, career_decision, roadmap)
 
     return True
 
 
 def save_active_roadmap(user_id: str, career_decision: dict, roadmap: dict, preserve_progress: bool = False):
-    """
-    Save the current active roadmap with progress tracking
-    
-    Args:
-        user_id: User's Firebase ID
-        career_decision: Career decision data
-        roadmap: Learning roadmap data
-        preserve_progress: If True, preserve existing progress and map completed phases to new roadmap
-    """
     existing_data = None
     if preserve_progress:
         existing_data = get_active_roadmap(user_id)
     
-    # Initialize status for each phase
     if "roadmap" in roadmap:
         for idx, phase in enumerate(roadmap["roadmap"]):
-            # Check if this phase was completed in the old roadmap
             if existing_data and preserve_progress:
                 old_roadmap = existing_data.get("learning_roadmap", {}).get("roadmap", [])
-                # Map by index (same phase position)
-                is_completed = False
                 if idx < len(old_roadmap):
                     old_phase = old_roadmap[idx]
                     if old_phase.get("status") == "completed":
-                        is_completed = True
                         phase["status"] = "completed"
                         phase["completed_at"] = old_phase.get("completed_at")
                     else:
                         phase["status"] = "pending"
                         phase["completed_at"] = None
                 else:
-                    # New phase added in adapted roadmap
                     phase["status"] = "pending"
                     phase["completed_at"] = None
             else:
-                # New roadmap - all phases start as pending
                 phase["status"] = "pending"
                 phase["completed_at"] = None
     
-    # Calculate initial or preserved progress
     if existing_data and preserve_progress:
-        # Recalculate based on what's still completed in new roadmap
         completed_count = sum(1 for p in roadmap.get("roadmap", []) if p.get("status") == "completed")
         progress_data = {
             "completed_phases": completed_count,
@@ -77,7 +58,6 @@ def save_active_roadmap(user_id: str, career_decision: dict, roadmap: dict, pres
             "last_activity_date": existing_data.get("progress", {}).get("last_activity_date")
         }
     else:
-        # New roadmap - start fresh
         progress_data = {
             "completed_phases": 0,
             "total_phases": len(roadmap.get("roadmap", [])),
@@ -97,7 +77,6 @@ def save_active_roadmap(user_id: str, career_decision: dict, roadmap: dict, pres
 
 
 def get_active_roadmap(user_id: str):
-    """Get the current active roadmap"""
     doc = db.collection("users").document(user_id).collection("active_roadmap").document("current").get()
     if doc.exists:
         return doc.to_dict()
@@ -105,7 +84,6 @@ def get_active_roadmap(user_id: str):
 
 
 def update_phase_status(user_id: str, phase_index: int, status: str):
-    """Update the status of a specific phase"""
     ref = db.collection("users").document(user_id).collection("active_roadmap").document("current")
     doc = ref.get()
     
@@ -120,11 +98,9 @@ def update_phase_status(user_id: str, phase_index: int, status: str):
         if status == "completed":
             roadmap[phase_index]["completed_at"] = datetime.utcnow().isoformat()
             
-            # Update progress count
             completed_count = sum(1 for p in roadmap if p.get("status") == "completed")
             data["progress"]["completed_phases"] = completed_count
             
-            # Update streak
             update_streak(data["progress"])
             
         ref.update({
@@ -138,7 +114,6 @@ def update_phase_status(user_id: str, phase_index: int, status: str):
 
 
 def update_streak(progress_data: dict):
-    """Calculate and update streak logic"""
     now = datetime.utcnow()
     last_active = progress_data.get("last_activity_date")
     
@@ -151,7 +126,6 @@ def update_streak(progress_data: dict):
             progress_data["streak_days"] += 1
         elif diff > 1:
             progress_data["streak_days"] = 1
-        # If diff == 0, streak remains same
     else:
         progress_data["streak_days"] = 1
         
@@ -159,7 +133,6 @@ def update_streak(progress_data: dict):
 
 
 def get_student_profile(user_id: str):
-    """Get student profile from Firestore"""
     doc = db.collection("users").document(user_id).get()
     if doc.exists:
         data = doc.to_dict()
@@ -168,7 +141,6 @@ def get_student_profile(user_id: str):
 
 
 def save_student_profile(user_id: str, profile: dict):
-    """Save or update student profile in Firestore"""
     try:
         print(f"Saving to Firestore for user: {user_id}")
         db.collection("users").document(user_id).set({
@@ -185,7 +157,6 @@ def save_student_profile(user_id: str, profile: dict):
 
 
 def delete_active_roadmap(user_id: str):
-    """Delete the active roadmap for a user"""
     try:
         ref = db.collection("users").document(user_id).collection("active_roadmap").document("current")
         doc = ref.get()

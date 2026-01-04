@@ -12,7 +12,6 @@ class StudentProfile(BaseModel):
 
 
 class CareerAnalysisProfile(BaseModel):
-    """Profile format used for career analysis"""
     interests: List[str] = Field(
         ..., example=["backend", "problem-solving"]
     )

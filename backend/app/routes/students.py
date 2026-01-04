@@ -10,7 +10,6 @@ router = APIRouter(
 
 @router.get("/profile")
 def get_profile(user_id: str = Depends(verify_firebase_token)):
-    """Get student profile"""
     try:
         profile = get_student_profile(user_id)
         if not profile:
@@ -24,12 +23,10 @@ def save_profile(
     profile: StudentProfile,
     user_id: str = Depends(verify_firebase_token)
 ):
-    """Save or update student profile"""
     try:
         print(f"Saving profile for user: {user_id}")
         print(f"Profile data: {profile.dict()}")
         
-        # Validate required fields
         if not profile.name or not profile.name.strip():
             raise HTTPException(status_code=400, detail="Name is required")
         if not profile.education or not profile.education.strip():

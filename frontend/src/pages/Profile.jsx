@@ -35,7 +35,6 @@ import {
   Compass
 } from 'lucide-react';
 
-// Predefined options
 const EDUCATION_LEVELS = [
   'High School',
   'Associate Degree',
@@ -48,7 +47,6 @@ const EDUCATION_LEVELS = [
 ];
 
 const SKILL_OPTIONS = [
-  // Programming Languages
   { name: 'JavaScript', category: 'Languages' },
   { name: 'Python', category: 'Languages' },
   { name: 'Java', category: 'Languages' },
@@ -62,7 +60,6 @@ const SKILL_OPTIONS = [
   { name: 'Swift', category: 'Languages' },
   { name: 'Kotlin', category: 'Languages' },
 
-  // Frontend
   { name: 'React', category: 'Frontend' },
   { name: 'Vue.js', category: 'Frontend' },
   { name: 'Angular', category: 'Frontend' },
@@ -71,7 +68,6 @@ const SKILL_OPTIONS = [
   { name: 'HTML/CSS', category: 'Frontend' },
   { name: 'Tailwind CSS', category: 'Frontend' },
 
-  // Backend
   { name: 'Node.js', category: 'Backend' },
   { name: 'Django', category: 'Backend' },
   { name: 'Flask', category: 'Backend' },
@@ -80,7 +76,6 @@ const SKILL_OPTIONS = [
   { name: 'FastAPI', category: 'Backend' },
   { name: '.NET', category: 'Backend' },
 
-  // Database
   { name: 'SQL', category: 'Database' },
   { name: 'PostgreSQL', category: 'Database' },
   { name: 'MongoDB', category: 'Database' },
@@ -88,7 +83,6 @@ const SKILL_OPTIONS = [
   { name: 'Redis', category: 'Database' },
   { name: 'Firebase', category: 'Database' },
 
-  // Cloud & DevOps
   { name: 'AWS', category: 'Cloud/DevOps' },
   { name: 'Azure', category: 'Cloud/DevOps' },
   { name: 'GCP', category: 'Cloud/DevOps' },
@@ -97,7 +91,6 @@ const SKILL_OPTIONS = [
   { name: 'CI/CD', category: 'Cloud/DevOps' },
   { name: 'Git', category: 'Cloud/DevOps' },
 
-  // Data & AI
   { name: 'Machine Learning', category: 'Data/AI' },
   { name: 'TensorFlow', category: 'Data/AI' },
   { name: 'PyTorch', category: 'Data/AI' },
@@ -150,7 +143,6 @@ const Profile = () => {
       });
 
       if (response.data && !response.data.message) {
-        // Convert comma-separated strings back to arrays
         setFormData({
           name: response.data.name || '',
           education: response.data.education || '',
@@ -161,7 +153,7 @@ const Profile = () => {
         });
       }
     } catch (error) {
-      console.error('Error loading profile:', error);
+
     } finally {
       setLoading(false);
     }
@@ -206,7 +198,6 @@ const Profile = () => {
   };
 
   const handleSubmit = async () => {
-    // Validate required fields
     if (!formData.name.trim()) {
       toast.error('⚠️ Please enter your name');
       return;
@@ -230,7 +221,6 @@ const Profile = () => {
 
     setIsSubmitting(true);
     try {
-      // Check if user is authenticated
       if (!auth.currentUser) {
         toast.error('⚠️ You must be logged in to save your profile');
         navigate('/login');
@@ -239,7 +229,6 @@ const Profile = () => {
 
       const token = await auth.currentUser.getIdToken();
 
-      // Convert arrays to comma-separated strings for backend
       const profileData = {
         name: formData.name.trim(),
         education: formData.education,
@@ -249,8 +238,6 @@ const Profile = () => {
         experience: formData.experience ? formData.experience.trim() : ''
       };
 
-      console.log('Saving profile:', profileData);
-
       const response = await axios.post(`${API_URL}/api/students/profile`, profileData, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -258,25 +245,16 @@ const Profile = () => {
         }
       });
 
-      console.log('Profile saved successfully:', response.data);
       toast.success('✅ Profile saved successfully!');
       navigate('/dashboard');
     } catch (error) {
-      console.error('Error saving profile:', error);
-
       let errorMessage = 'Failed to save profile. ';
 
       if (error.response) {
-        // Server responded with error
-        console.error('Error response:', error.response.data);
         errorMessage += error.response.data.detail || error.response.data.message || 'Please try again.';
       } else if (error.request) {
-        // Request made but no response
-        console.error('No response received:', error.request);
         errorMessage += 'Unable to reach the server. Please check your connection.';
       } else {
-        // Error setting up request
-        console.error('Error details:', error.message);
         errorMessage += error.message || 'Please try again.';
       }
 
@@ -286,7 +264,6 @@ const Profile = () => {
     }
   };
 
-  // Group skills by category
   const skillsByCategory = SKILL_OPTIONS.reduce((acc, skill) => {
     if (!acc[skill.category]) {
       acc[skill.category] = [];
@@ -305,7 +282,6 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black flex flex-col items-center justify-center p-3 sm:p-4 md:p-6 transition-colors">
-      {/* App Header */}
       <div className="mb-6 sm:mb-8 text-center animate-fade-in">
         <div className="flex items-center justify-center gap-3 mb-2">
           <div
@@ -320,7 +296,6 @@ const Profile = () => {
       </div>
 
       <div className="w-full max-w-4xl">
-        {/* Back Button */}
         <Button
           variant="ghost"
           onClick={() => navigate('/dashboard')}
@@ -341,7 +316,6 @@ const Profile = () => {
           </CardHeader>
 
           <CardContent className="p-4 sm:p-5 md:p-6 space-y-6 sm:space-y-8">
-            {/* Basic Info */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -376,7 +350,6 @@ const Profile = () => {
               </div>
             </motion.div>
 
-            {/* Skills */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -436,7 +409,6 @@ const Profile = () => {
               )}
             </motion.div>
 
-            {/* Interests */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -526,7 +498,6 @@ const Profile = () => {
               )}
             </motion.div>
 
-            {/* Goals & Experience */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -557,7 +528,6 @@ const Profile = () => {
               </div>
             </motion.div>
 
-            {/* Save Button */}
             <div className="flex justify-end gap-3 pt-4 sm:pt-5 border-t border-gray-100 dark:border-zinc-800">
               <Button
                 variant="outline"

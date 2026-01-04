@@ -28,9 +28,24 @@ const Toast = ({ message, type = 'success', onClose }) => {
                         {icons[type]}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-base font-semibold text-gray-900 dark:text-white leading-relaxed">
-                            {message}
-                        </p>
+                        {typeof message === 'string' ? (
+                            <p className="text-sm font-medium text-gray-900 dark:text-white leading-relaxed">
+                                {message}
+                            </p>
+                        ) : (
+                            <div className="flex flex-col gap-1">
+                                {message.title && (
+                                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                                        {message.title}
+                                    </p>
+                                )}
+                                {message.description && (
+                                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                        {message.description}
+                                    </p>
+                                )}
+                            </div>
+                        )}
                     </div>
                     <button
                         onClick={onClose}
@@ -47,8 +62,8 @@ const Toast = ({ message, type = 'success', onClose }) => {
 
 const ToastContainer = ({ toasts, removeToast }) => {
     return (
-        <div className="fixed top-4 left-0 right-0 z-[100] px-4 pointer-events-none">
-            <div className="pointer-events-auto">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 pointer-events-none">
+            <div className="pointer-events-auto w-full max-w-md">
                 <AnimatePresence>
                     {toasts.map((toast) => (
                         <div key={toast.id} className="mb-3">

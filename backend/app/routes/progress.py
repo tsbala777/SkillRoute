@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
+from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel
 from app.services.storage_service import update_phase_status, get_active_roadmap, save_active_roadmap
 from app.services.roadmap_agent import adapt_roadmap
@@ -11,14 +12,13 @@ router = APIRouter(
 
 class ProgressUpdate(BaseModel):
     phase_index: int
-    status: str  # "completed", "in-progress"
+    status: str
 
 @router.post("/update")
 def update_progress(
     update: ProgressUpdate,
     user_id: str = Depends(verify_firebase_token)
 ):
-    """Update the status of a roadmap phase"""
     success = update_phase_status(user_id, update.phase_index, update.status)
     if not success:
         raise HTTPException(status_code=404, detail="Roadmap or phase not found")
@@ -26,28 +26,24 @@ def update_progress(
     return {"status": "success", "message": "Progress updated"}
 
 @router.post("/adapt")
-def adapt_roadmap_route(
+async def adapt_roadmap_route(
     user_id: str = Depends(verify_firebase_token)
 ):
-    """Adapt the roadmap based on current progress"""
-    current_data = get_active_roadmap(user_id)
+    current_data = await run_in_threadpool(get_active_roadmap, user_id)
     if not current_data:
         raise HTTPException(status_code=404, detail="No active roadmap found")
     
-    # Logic to adapt roadmap
-    # We pass the current roadmap and progress to the AI agent
-    new_roadmap = adapt_roadmap(current_data)
+    new_roadmap = await adapt_roadmap(current_data)
     
-    # Save the new adapted roadmap WITH PROGRESS PRESERVATION
-    save_active_roadmap(
+    await run_in_threadpool(
+        save_active_roadmap,
         user_id, 
         current_data["career_decision"], 
         new_roadmap,
-        preserve_progress=True  # Preserve existing progress
+        preserve_progress=True
     )
     
-    # Return updated data with recalculated progress
-    updated_data = get_active_roadmap(user_id)
+    updated_data = await run_in_threadpool(get_active_roadmap, user_id)
     return {
         "status": "success",
         "career_decision": updated_data.get("career_decision"),

@@ -19,12 +19,14 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false)
   const [showTimeline, setShowTimeline] = useState(true)
   const [showConfirmReset, setShowConfirmReset] = useState(false)
+  const [showConfirmAdapt, setShowConfirmAdapt] = useState(false)
   const navigate = useNavigate()
   const toast = useToast()
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
   const handleAdaptRoadmap = async () => {
+    setShowConfirmAdapt(false)
     setLoading(true)
     try {
       const token = await auth.currentUser.getIdToken()
@@ -32,9 +34,11 @@ const Dashboard = () => {
         headers: { Authorization: `Bearer ${token}` }
       })
       await loadRoadmap()
-      toast.success('Roadmap successfully adapted to your progress!')
+      toast.success({
+        title: 'Roadmap Adapted',
+        description: 'Your learning path has been updated based on your recent progress.'
+      })
     } catch (error) {
-      console.error('Error adapting roadmap:', error)
       toast.error('Failed to adapt roadmap. Please try again.')
     } finally {
       setLoading(false)
@@ -56,7 +60,7 @@ const Dashboard = () => {
         setProfile(response.data)
       }
     } catch (error) {
-      console.error('Error loading profile:', error)
+
     }
   }
 
@@ -70,7 +74,7 @@ const Dashboard = () => {
         setRoadmap(response.data)
       }
     } catch (error) {
-      console.error('Error loading roadmap:', error)
+
     }
   }
 
@@ -89,7 +93,6 @@ const Dashboard = () => {
       setRoadmap(response.data)
       toast.success('Roadmap generated successfully!')
     } catch (error) {
-      console.error('Error generating roadmap:', error)
       toast.error('Failed to generate roadmap')
     } finally {
       setLoading(false)
@@ -105,13 +108,10 @@ const Dashboard = () => {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      // Clear roadmap state
       setRoadmap(null)
 
-      // Show success message
       toast.success('Career path reset successfully! You can now generate a new roadmap.')
     } catch (error) {
-      console.error('Error resetting career path:', error)
       toast.error('Failed to reset career path. Please try again.')
     } finally {
       setLoading(false)
@@ -123,7 +123,7 @@ const Dashboard = () => {
       await signOut(auth)
       navigate('/login')
     } catch (error) {
-      console.error('Error signing out:', error)
+
     }
   }
 
@@ -134,14 +134,11 @@ const Dashboard = () => {
         userName={profile?.name}
       />
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
-        {/* Show Career Match Card if we have a decision */}
         {roadmap?.career_decision && (
           <CareerMatchCard careerDecision={roadmap.career_decision} />
         )}
 
-        {/* Adaptive Recommendations */}
         {roadmap?.progress && roadmap?.learning_roadmap && (
           <AdaptiveRecommendations
             progress={roadmap.progress}
@@ -149,7 +146,6 @@ const Dashboard = () => {
           />
         )}
 
-        {/* Empty State / Generator */}
         {!roadmap && (
           <div className="mt-8">
             <RoadmapView
@@ -161,10 +157,8 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Main Roadmap Section */}
         {roadmap && (
           <div className="space-y-6 mt-8">
-            {/* Global Roadmap Header */}
             <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-800 p-4 sm:p-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -175,8 +169,7 @@ const Dashboard = () => {
                     Personalized path to your goals
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {/* View Toggler */}
+                <div className="flex items-center gap-2">
                   <div className="flex bg-gray-100 dark:bg-zinc-800 rounded-lg p-1">
                     <button
                       onClick={() => setShowTimeline(false)}
@@ -201,12 +194,12 @@ const Dashboard = () => {
                   <div className="w-px h-8 bg-gray-200 dark:bg-zinc-700 mx-1 hidden md:block"></div>
 
                   <button
-                    onClick={handleAdaptRoadmap}
+                    onClick={() => setShowConfirmAdapt(true)}
                     disabled={loading}
-                    className="inline-flex items-center justify-center px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-all disabled:opacity-50 text-sm font-medium"
+                    className="inline-flex items-center justify-center px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-all disabled:opacity-50 text-sm font-medium whitespace-nowrap"
                   >
                     <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                    Adapt Path
+                    Adapt
                   </button>
 
                   <button
@@ -221,7 +214,6 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Progress Tracker - Always Visible */}
             {roadmap.progress && (
               <ProgressTracker
                 progress={roadmap.progress}
@@ -229,7 +221,6 @@ const Dashboard = () => {
               />
             )}
 
-            {/* View Content */}
             <div>
               {showTimeline && roadmap?.learning_roadmap ? (
                 <TimelineView
@@ -249,7 +240,6 @@ const Dashboard = () => {
         )}
       </main>
 
-      {/* Confirmation Modal */}
       <ConfirmModal
         isOpen={showConfirmReset}
         onConfirm={resetCareerPath}
@@ -259,6 +249,16 @@ const Dashboard = () => {
         confirmText="Yes, Reset"
         cancelText="Cancel"
         type="danger"
+      />
+
+      <ConfirmModal
+        isOpen={showConfirmAdapt}
+        onConfirm={handleAdaptRoadmap}
+        onCancel={() => setShowConfirmAdapt(false)}
+        title="Adapt Roadmap?"
+        message="This will analyze your current progress and performance to generate a more personalized learning path for you. Do you want to proceed?"
+        confirmText="Yes, Adapt Path"
+        cancelText="Cancel"
       />
     </div>
   )
