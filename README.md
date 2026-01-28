@@ -44,7 +44,7 @@ SkillRoute delivers AI-powered career path decisions, personalized learning road
 |------------|---------|
 | **FastAPI** | High-performance web framework |
 | **Python 3.8+** | Core programming language |
-| **OpenAI API** | Large Language Model for AI agents |
+| **Groq API** | Large Language Model for AI agents |
 | **Firebase Admin SDK** | Backend authentication and database |
 | **Pydantic** | Data validation and settings management |
 | **python-dotenv** | Environment variable management |
@@ -146,7 +146,7 @@ Create a `.env` file inside `backend/` directory:
 |----------|-------------|---------|
 | `PROJECT_NAME` | Application name | SkillRoute |
 | `ENV` | Environment mode | development |
-| `OPENAI_API_KEY` | OpenAI API key for LLM | sk-... |
+| `GROQ_API_KEY` | Groq API key for LLM | gsk_... |
 | `FIREBASE_CREDENTIALS` | Firebase service account | path/to/credentials.json |
 
 **Example `.env` file:**
@@ -154,6 +154,6 @@ Create a `.env` file inside `backend/` directory:
 ```env
 PROJECT_NAME=SkillRoute
 ENV=development
-OPENAI_API_KEY=your_openai_key_here
+GROQ_API_KEY=your_groq_key_here
 FIREBASE_CREDENTIALS=./firebase-credentials.json
 ```
