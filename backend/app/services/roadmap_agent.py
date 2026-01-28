@@ -77,7 +77,7 @@ async def generate_roadmap(profile: dict) -> dict:
                     {"role": "user", "content": json.dumps(profile)}
                 ],
                 temperature=1,
-                max_completion_tokens=1024,
+                max_completion_tokens=512,
                 top_p=1,
                 stream=False
             )
@@ -145,7 +145,7 @@ async def adapt_roadmap(current_data: dict) -> dict:
                     {"role": "user", "content": json.dumps(input_data)}
                 ],
                 temperature=1,
-                max_completion_tokens=1024,
+                max_completion_tokens=512,
                 top_p=1,
                 stream=False
             )

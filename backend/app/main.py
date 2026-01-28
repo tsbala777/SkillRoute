@@ -15,11 +15,12 @@ origins = [
     "http://localhost:3000",
     "http://localhost:5173",
     "https://skillroute.vercel.app",
+    "https://*.vercel.app",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # Allow all origins for now to fix CORS
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
