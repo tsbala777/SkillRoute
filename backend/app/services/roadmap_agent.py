@@ -4,7 +4,8 @@ from openai import AsyncOpenAI
 
 client = AsyncOpenAI(
     api_key=os.getenv("GROQ_API_KEY"),
-    base_url="https://api.groq.com/openai/v1"
+    base_url="https://api.groq.com/openai/v1",
+    timeout=30.0  # 30 second timeout
 )
 
 SYSTEM_PROMPT = """
@@ -66,21 +67,34 @@ Return ONLY valid JSON in this exact format:
 """
 
 async def generate_roadmap(profile: dict) -> dict:
-    response = await client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": json.dumps(profile)}
-        ],
-        temperature=0.3
-    )
+    max_retries = 2
+    retry_count = 0
+    
+    while retry_count < max_retries:
+        try:
+            response = await client.chat.completions.create(
+                model="meta-llama/llama-prompt-guard-2-86m",
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": json.dumps(profile)}
+                ],
+                temperature=0.3,
+                timeout=25.0
+            )
 
-    content = response.choices[0].message.content
+            content = response.choices[0].message.content
 
-    try:
-        return json.loads(content)
-    except json.JSONDecodeError:
-        raise ValueError("Roadmap agent returned invalid JSON")
+            try:
+                return json.loads(content)
+            except json.JSONDecodeError:
+                raise ValueError("Roadmap agent returned invalid JSON")
+        except Exception as e:
+            retry_count += 1
+            if retry_count >= max_retries:
+                raise
+            # Wait a bit before retrying
+            import asyncio
+            await asyncio.sleep(1)
 
 
 ADAPT_SYSTEM_PROMPT = """
@@ -119,18 +133,31 @@ async def adapt_roadmap(current_data: dict) -> dict:
         "progress": current_data.get("progress")
     }
     
-    response = await client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[
-            {"role": "system", "content": ADAPT_SYSTEM_PROMPT},
-            {"role": "user", "content": json.dumps(input_data)}
-        ],
-        temperature=0.3
-    )
+    max_retries = 2
+    retry_count = 0
+    
+    while retry_count < max_retries:
+        try:
+            response = await client.chat.completions.create(
+                model="meta-llama/llama-prompt-guard-2-86m",
+                messages=[
+                    {"role": "system", "content": ADAPT_SYSTEM_PROMPT},
+                    {"role": "user", "content": json.dumps(input_data)}
+                ],
+                temperature=0.3,
+                timeout=25.0
+            )
 
-    content = response.choices[0].message.content
+            content = response.choices[0].message.content
 
-    try:
-        return json.loads(content)
-    except json.JSONDecodeError:
-        return current_data.get("learning_roadmap")
+            try:
+                return json.loads(content)
+            except json.JSONDecodeError:
+                return current_data.get("learning_roadmap")
+        except Exception as e:
+            retry_count += 1
+            if retry_count >= max_retries:
+                return current_data.get("learning_roadmap")
+            # Wait a bit before retrying
+            import asyncio
+            await asyncio.sleep(1)

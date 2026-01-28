@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { useToast } from '../contexts/ToastContext';
 import axios from 'axios';
+import { cache } from '../lib/cache';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -137,23 +138,43 @@ const Profile = () => {
 
   const loadProfile = async () => {
     try {
-      const token = await auth.currentUser.getIdToken();
-      const response = await axios.get(`${API_URL}/api/students/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      // Check cache first
+      const cachedProfile = cache.get('studentProfile');
+      if (cachedProfile) {
+        setFormData(cachedProfile);
+        setLoading(false);
+        return;
+      }
 
-      if (response.data && !response.data.message) {
-        setFormData({
-          name: response.data.name || '',
-          education: response.data.education || '',
-          skills: response.data.skills ? response.data.skills.split(', ').filter(s => s) : [],
-          interests: response.data.interests ? response.data.interests.split(', ').filter(i => i) : [],
-          goals: response.data.goals || '',
-          experience: response.data.experience || ''
+      const token = await auth.currentUser.getIdToken();
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+      try {
+        const response = await axios.get(`${API_URL}/api/students/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal
         });
+
+        if (response.data && !response.data.message) {
+          const profileData = {
+            name: response.data.name || '',
+            education: response.data.education || '',
+            skills: response.data.skills ? response.data.skills.split(', ').filter(s => s) : [],
+            interests: response.data.interests ? response.data.interests.split(', ').filter(i => i) : [],
+            goals: response.data.goals || '',
+            experience: response.data.experience || ''
+          };
+          setFormData(profileData);
+          cache.set('studentProfile', profileData, 10); // Cache for 10 minutes
+        }
+      } finally {
+        clearTimeout(timeoutId);
       }
     } catch (error) {
-
+      if (error.code !== 'ECONNABORTED') {
+        console.error('Profile load error:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -245,6 +266,9 @@ const Profile = () => {
         }
       });
 
+      // Clear cache when profile is updated
+      cache.clear('studentProfile');
+      
       toast.success('✅ Profile saved successfully!');
       navigate('/dashboard');
     } catch (error) {

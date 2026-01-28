@@ -53,28 +53,48 @@ const Dashboard = () => {
   const loadProfile = async () => {
     try {
       const token = await auth.currentUser.getIdToken()
-      const response = await axios.get(`${API_URL}/api/students/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      if (response.data && !response.data.message) {
-        setProfile(response.data)
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 8000) // 8s timeout
+
+      try {
+        const response = await axios.get(`${API_URL}/api/students/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal
+        })
+        if (response.data && !response.data.message) {
+          setProfile(response.data)
+        }
+      } finally {
+        clearTimeout(timeoutId)
       }
     } catch (error) {
-
+      if (error.code !== 'ECONNABORTED') {
+        console.error('Profile load error:', error)
+      }
     }
   }
 
   const loadRoadmap = async () => {
     try {
       const token = await auth.currentUser.getIdToken()
-      const response = await axios.get(`${API_URL}/api/career/roadmap`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      if (response.data && !response.data.message) {
-        setRoadmap(response.data)
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 8000) // 8s timeout
+
+      try {
+        const response = await axios.get(`${API_URL}/api/career/roadmap`, {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal
+        })
+        if (response.data && !response.data.message) {
+          setRoadmap(response.data)
+        }
+      } finally {
+        clearTimeout(timeoutId)
       }
     } catch (error) {
-
+      if (error.code !== 'ECONNABORTED') {
+        console.error('Roadmap load error:', error)
+      }
     }
   }
 
